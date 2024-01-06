@@ -74,8 +74,7 @@ export default function Dashboard() {
         withCredentials: true,
       })
       .then((response) => {
-        alert("Successfully send Message")
-        setDel(!del)
+        alert('Message Sent Successfully')
         // console.log(response)
       })
       .catch((err) => {
@@ -154,7 +153,6 @@ export default function Dashboard() {
         <div className="row justify-content-between" style={{ paddingLeft: "10px" }}>
           <div className="col-10">
             <br />
-            <form>
               <div className="form-group d-flex" style={{ marginLeft: '30px' }}>
                 <div>
                   <input
@@ -191,7 +189,6 @@ export default function Dashboard() {
                 </div>
               </div>
 
-            </form>
 
             <br />
           </div>
