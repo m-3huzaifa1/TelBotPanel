@@ -14,6 +14,7 @@ const useRefreshToken = () => {
             // console.log(prev);
             // console.log(JSON.stringify(response.data));
             // console.log(response?.data?.accessToken);
+        //console.log(response?.data);
             return { 
                 ...prev, 
                 accessToken: response?.data?.accessToken,
@@ -22,7 +23,7 @@ const useRefreshToken = () => {
             
                 
         });
-        // console.log(auth);
+        //console.log(auth);
         return response?.data?.accessToken;
     }
     return refresh;
