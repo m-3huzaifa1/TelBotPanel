@@ -25,8 +25,20 @@ export class TelegramService {
     }
 
     subscribeUser = async (chatId: string) => {
-        await this.chatIdService.create(chatId);
-
+        // await this.chatIdService.create(chatId);
+        try {
+            // Check if chatId already exists
+            const existingChatId = await this.chatIdService.findOne(chatId);
+        
+            if (existingChatId) {
+              console.log(`ChatId ${chatId} already exists.`);
+            } else {
+              await this.chatIdService.create(chatId);
+              console.log(`ChatId ${chatId} subscribed successfully.`);
+            }
+          } catch (error) {
+            console.error(error);
+          }
     }
 
     getUser = async () => {

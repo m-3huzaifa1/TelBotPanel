@@ -16,6 +16,11 @@ export class ChatIdService {
     return this.chatIdModel.find().exec();
   }
 
+  async findOne(id: string) {
+    const user = await this.chatIdModel.findOne({chatId: id}).exec();
+    return user
+  }
+
   async deleteOne(id: string): Promise<ChatId[]> {
     await this.chatIdModel.deleteOne({ chatId: id }).exec();
     const remainingChatIds = await this.chatIdModel.find().exec();

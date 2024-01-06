@@ -7,6 +7,9 @@ import { Link } from "react-router-dom";
 import { EmailShareButton, WhatsappShareButton } from 'react-share';
 import emailjs from 'emailjs-com';
 
+const NESTBOT_URL = "https://nestbotserver.onrender.com"
+// const NESTBOT_URL = "http://localhost:8081"
+
 export default function Dashboard() {
   const { auth } = useAuth()
   const Logout = useLogout()
@@ -24,7 +27,7 @@ export default function Dashboard() {
   useEffect(() => {
     const getUsers = async () => {
 
-      const res = await axios.get(`http://localhost:8081/api/user/getAllUsers`,
+      const res = await axios.get(`${NESTBOT_URL}/api/user/getAllUsers`,
         {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
@@ -46,7 +49,7 @@ export default function Dashboard() {
       token: botToken
     }
     // console.log(data)
-    await axios.post(`http://localhost:8081/api/bot/token`, JSON.stringify(data),
+    await axios.post(`${NESTBOT_URL}/api/bot/token`, JSON.stringify(data),
       {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
@@ -65,7 +68,7 @@ export default function Dashboard() {
       msg: botMessage
     }
     // console.log(data)
-    await axios.post(`http://localhost:8081/api/bot/message`, JSON.stringify(data),
+    await axios.post(`${NESTBOT_URL}/api/bot/message`, JSON.stringify(data),
       {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
@@ -85,7 +88,7 @@ export default function Dashboard() {
       id: userid
     }
     // console.log(data)
-    await axios.post(`http://localhost:8081/api/user/deleteUser`, JSON.stringify(data),
+    await axios.post(`${NESTBOT_URL}/api/user/deleteUser`, JSON.stringify(data),
       {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
@@ -106,7 +109,7 @@ export default function Dashboard() {
       blocked: blocked
     }
     // console.log(data)
-    await axios.post(`http://localhost:8081/api/user/blockUser`, JSON.stringify(data),
+    await axios.post(`${NESTBOT_URL}/api/user/blockUser`, JSON.stringify(data),
       {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
