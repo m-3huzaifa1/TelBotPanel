@@ -1,23 +1,24 @@
 import React,{useState,useEffect, useRef} from "react";
-import { Link,useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "../Hooks/axios";
-import useAuth from "../Hooks/auth/useAuth";
+// import useAuth from "../Hooks/auth/useAuth";
 import { getAuth, signInWithPopup } from "firebase/auth";
-import { auth, provider } from "../utils/init-firebase";
+import { provider } from "../utils/init-firebase";
 
 export default function Login() {
-    const {auth,setAuth} = useAuth()
+    // const {auth,setAuth} = useAuth()
     const navigate = useNavigate()
     const [email,setEmail] = useState()
     const [password,setPassword] = useState()
     const GOOGLEURL = "/api/auth/googleUser";
     // console.log(email,password)
-    const EMAIL =
-    /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-    const PASSWORD =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-  
+    // eslint-disable-next-line
+    const EMAIL = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+   // eslint-disable-next-line
+    const PASSWORD = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  // eslint-disable-next-line
     const [validemail, setValidemail] = useState(true);
+    // eslint-disable-next-line
     const [validpassword, setValidpassword] = useState(true);
     const [errMsg, setErrMsg] = useState("");
    // const [user, setUser] = useState("");
@@ -25,15 +26,19 @@ export default function Login() {
 
     useEffect(() => {
         setValidemail(EMAIL.test(email));
+        // eslint-disable-next-line
       }, [email]);
       useEffect(() => {
         setValidpassword(PASSWORD.test(password));
+// eslint-disable-next-line
       }, [password]);
     
       useEffect(() => {
         setErrMsg("");
+        // eslint-disable-next-line
       }, [email, password])
-      
+
+    // eslint-disable-next-line  
     const handleSubmit = async(e) => {
         
         e.preventDefault();
@@ -45,6 +50,7 @@ export default function Login() {
         }
         navigate('/home');*/
         try {
+          // eslint-disable-next-line
           const response = await axios.post(
             'api/auth/login',
             JSON.stringify({
@@ -58,12 +64,7 @@ export default function Login() {
             }
           );
           // console.log(response?.data);
-          const accessToken = response?.data?.accessToken;
-          const user = response?.data?.user
-          /*setAuth({
-            accessToken:accessToken,
-            user:user,
-          });*/
+          
           setEmail("");
           setPassword("");
           navigate('/dashboard');
@@ -86,7 +87,7 @@ export default function Login() {
       signInWithPopup(getAuth(), provider)
         .then(async (result) => {
           // console.log(result);
-          const res = await axios
+          await axios
             .post(
               GOOGLEURL,
               JSON.stringify({
@@ -122,6 +123,7 @@ export default function Login() {
     };
   
     // console.log(auth)
+    // eslint-disable-next-line
     const checkSubmit = email && password
     return(
       <>

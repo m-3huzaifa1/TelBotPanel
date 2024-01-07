@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter,Routes,Route } from "react-router-dom";
 import Dashboard from "../components/Dashboard"; 
 import Login from "../components/Login";
-import Register from "../components/Register";
+// import Register from "../components/Register";
 import { AuthProvider } from "../Hooks/auth/AuthProvider";
 import PersistLogin from '../Hooks/Token/PersistLogin'
 import ProtectedRoutes from './ProtectedRoutes'

@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'font-awesome/css/font-awesome.min.css'
+// eslint-disable-next-line
 import { Provider } from 'react-redux';
 //import { createStore } from 'redux';
 //import rootReducers from './redux/store/combineReducers';

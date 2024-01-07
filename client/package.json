@@ -33,7 +33,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && npx update-browserslist-db@latest",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -41,7 +41,11 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "rules": {
+      "no-warning-comments": "off",
+      "no-console": "off"
+    }
   },
   "browserslist": {
     "production": [

@@ -1,9 +1,9 @@
 import React from 'react'
-import { Navigate, useLocation, Outlet } from 'react-router-dom'
+import { Navigate, Outlet } from 'react-router-dom'
 import useAuth from '../Hooks/auth/useAuth'
 const ProtectedRoutes = ({children}) => {
   const { auth } = useAuth();
-  const location = useLocation();
+  // const location = useLocation();
   // console.log(auth)
   if(!auth || auth === undefined || auth === null){
       return <Navigate to="/login"/>

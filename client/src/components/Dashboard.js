@@ -1,26 +1,18 @@
 import React, { useEffect, useState } from "react";
-import useAuth from "../Hooks/auth/useAuth";
+// import useAuth from "../Hooks/auth/useAuth";
 import useLogout from "../Hooks/useLogout";
-import io from 'socket.io-client';
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { EmailShareButton, WhatsappShareButton } from 'react-share';
-import emailjs from 'emailjs-com';
 
 const NESTBOT_URL = "https://nestbotserver.onrender.com"
 // const NESTBOT_URL = "http://localhost:8081"
 
 export default function Dashboard() {
-  const { auth } = useAuth()
+  // const { auth } = useAuth()
   const Logout = useLogout()
   const [botToken, setBotToken] = useState('')
   const [botMessage, setBotMessage] = useState('')
   const [allUsers, setAllUsers] = useState();
-  const [symbol, setSymbol] = useState('');
-  const [stockPriceH, setStockPriceH] = useState('');
-  const [stockPriceL, setStockPriceL] = useState('');
-  const [email, setEmail] = useState('mohdhuzaifa80@gmail.com')
-  const [date, setDate] = useState('')
   const [del,setDel] = useState(false)
   const [isFetching,setIsFetching] = useState(false);
   // console.log(date)
@@ -28,10 +20,11 @@ export default function Dashboard() {
   useEffect(() => {
     const getUsers = async () => {
        setIsFetching(true)
-      const res = await axios.get(`${NESTBOT_URL}/api/user/getAllUsers`,
+
+      await axios.get(`${NESTBOT_URL}/api/user/getAllUsers`,
         {
           headers: { "Content-Type": "application/json" },
-          withCredentials: true,
+          withCredentials: true,  
         })
 
         .then((response) => {
@@ -142,13 +135,13 @@ export default function Dashboard() {
           </div>
           <div className="col-2">
             <button className="btn btn-success btn-sm">
-              <a
+              <span
                 type="button"
                 onClick={Logout}
                 style={{ textDecoration: 'none' }}
               >
                 Sign Out
-              </a>
+              </span>
             </button>
           </div>
         </div>

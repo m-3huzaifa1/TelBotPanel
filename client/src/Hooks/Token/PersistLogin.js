@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
-import useAuth from "../auth/useAuth";
+// import useAuth from "../auth/useAuth";
 import useRefreshToken from "./useRefreshToken";
 
 const PersistLogin = ()=>{
     const [isLoading, setIsLoading] = useState(true);
     const refresh = useRefreshToken();
-    const {auth} = useAuth();
+    // const {auth} = useAuth();
     // const {companyId}= useCompany();
     useEffect(() => {
            
-        let isMounted = true;
+        // let isMounted = true;
         // console.log("PersistLogin");
         const verifyRefreshToken = async () => {
             try{
@@ -24,13 +24,20 @@ const PersistLogin = ()=>{
             }
         }
         verifyRefreshToken() ;
-        return () => isMounted = false;
-    },[])
-    useEffect(() => {
-        // console.log(`isLoading: ${isLoading}`);
-        // console.log(`auth: ${JSON.stringify(auth?.accessToken)}`);
-        // console.log(`auth: ${JSON.stringify(auth?.foundUser)}`);
-    }, [isLoading])
+        // return () => isMounted = false;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    ,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    )
+
+    // useEffect(() => {
+    //     // console.log(`isLoading: ${isLoading}`);
+    //     // console.log(`auth: ${JSON.stringify(auth?.accessToken)}`);
+    //     // console.log(`auth: ${JSON.stringify(auth?.foundUser)}`);
+    // }, [isLoading])
 
     return (
         <>
