@@ -22,11 +22,12 @@ export default function Dashboard() {
   const [email, setEmail] = useState('mohdhuzaifa80@gmail.com')
   const [date, setDate] = useState('')
   const [del,setDel] = useState(false)
+  const [isFetching,setIsFetching] = useState(false);
   // console.log(date)
 
   useEffect(() => {
     const getUsers = async () => {
-
+       setIsFetching(true)
       const res = await axios.get(`${NESTBOT_URL}/api/user/getAllUsers`,
         {
           headers: { "Content-Type": "application/json" },
@@ -36,6 +37,7 @@ export default function Dashboard() {
         .then((response) => {
           // console.log(response)
           setAllUsers(response.data.users);
+          setIsFetching(false)
         })
         .catch((err) => {
           console.log(err)
@@ -150,7 +152,7 @@ export default function Dashboard() {
             </button>
           </div>
         </div>
-        <div className="row justify-content-between" style={{ paddingLeft: "10px" }}>
+        {isFetching ? "Wait.. , Fetching server data " : (<div className="row justify-content-between" style={{ paddingLeft: "10px" }}>
           <div className="col-10">
             <br />
               <div className="form-group d-flex" style={{ marginLeft: '30px' }}>
@@ -226,7 +228,7 @@ export default function Dashboard() {
             }
           </div>
 
-        </div>
+        </div>)}
       </div>
 
     </div>
