@@ -1,4 +1,0 @@
-github-https://github.com/m-3huzaifa1/TelBotPanel
-server-https://telbotserver.onrender.com
-nestjs-https://nestbotserver.onrender.com
-client-
