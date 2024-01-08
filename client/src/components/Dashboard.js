@@ -16,7 +16,12 @@ export default function Dashboard() {
   const [allUsers, setAllUsers] = useState();
   const [del,setDel] = useState(false)
   const [isFetching,setIsFetching] = useState(false);
-  // console.log(date)
+  const [lat,setLat]= useState("28.6519")
+  const [lng,setLng]= useState("77.2187")
+  const [location,setLocation]= useState("Delhi,India")
+  const [wdata,setWdata] = useState()
+  const [cerr,setCerr] = useState()
+  const [err,setErr] = useState()
 
   useEffect(() => {
     const getUsers = async () => {
@@ -39,6 +44,52 @@ export default function Dashboard() {
     }
     getUsers();
   }, [del])
+
+  useEffect(()=>{
+    const getCoordinates = async() => {
+      // const query = `${city}, ${state}, ${country}`;
+      const query = location;
+      const geoURL = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`;
+  
+      try {
+        const response = await fetch(geoURL);
+        const geoData = await response.json();
+  
+        if (geoData.length > 0) {
+          const { lat, lon } = geoData[0];
+          setLat(lat);
+          setLng(lon);
+          // console.log({ latitude: lat, longitude: lon });
+          setCerr()
+        } else {
+          setCerr('Enter correct city or state or country name separated by a comma')
+          throw new Error('Coordinates not found for the given location');
+        }
+      } catch (error) {
+        console.error('Error fetching coordinates:', error);
+        throw error;
+      }
+    }
+    getCoordinates();
+  },[location,err])
+
+  useEffect(()=>{
+    const getWeatherData = async() => {
+      const weatherURL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&hourly=temperature_2m,relative_humidity_2m,precipitation&timezone=auto&forecast_days=1`;
+  
+      try {
+        const response = await fetch(weatherURL);
+        const weatherData = await response.json();
+        setWdata(weatherData);
+        // console.log(weatherData);
+      } catch (error) {
+        console.error('Error fetching weather data:', error);
+        throw error;
+      }
+    }
+  
+    getWeatherData()
+  },[lat,lng])
 
   const AddToken = async () => {
     const data = {
@@ -118,6 +169,51 @@ export default function Dashboard() {
       })
   }
 
+  
+  // const fetchData = async () => {
+  //   try {
+  //     const data = await getWeatherData('Mumbai');
+  //     console.log(data); // Display the weather data for Mumbai
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+   const messageTemplate = 
+   `
+   Today's Weather Update :
+
+   Location : ${location}
+
+   Hourly Temperature : ${wdata?.hourly?.temperature_2m}°C
+
+   Relative humidity : ${wdata?.hourly?.relative_humidity_2m}
+
+   Precipitation : ${wdata?.hourly?.precipitation
+    
+   }
+   `
+   console.log(messageTemplate)
+
+   const SendWdata = async () => {
+    const data = {
+      msg: messageTemplate
+    }
+    // console.log(data)
+    await axios.post(`${NESTBOT_URL}/api/bot/message`, JSON.stringify(data),
+      {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      })
+      .then((response) => {
+        alert('Message Sent Successfully')
+        // console.log(response)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  };
+
   return (
     <div className="row" style={{ height: "100vh" }}>
 
@@ -158,7 +254,7 @@ export default function Dashboard() {
                     value={botToken}
                     onChange={(e) => setBotToken(e.target.value)}
                     placeholder="Updated existing Bot Token"
-                    id="exampleInputEmail1"
+                    id="bot-token"
                   />
                 </div>
                 <div>
@@ -176,13 +272,56 @@ export default function Dashboard() {
                     className="form-control"
                     value={botMessage}
                     onChange={(e) => setBotMessage(e.target.value)}
-                    placeholder="Send Updates to Telegram Bot subscribers"
-                    id="exampleInputEmail1"
+                    placeholder="Send Custom messsage to Telegram Bot subscribers"
+                    id="message"
                   />
                 </div>
                 <div>
                   <button className="btn btn-success" style={{ marginLeft: "30px" }} onClick={SendMsg}>Send Message</button>
                 </div>
+              </div>
+              <div className="form-group mt-3" style={{ marginLeft: '30px' }}>
+                <div className="d-flex">
+                  <div >
+                <div className="d-flex">
+                <input
+                    type="text"
+                    style={{ border: '1px solid black', width: '300px' }}
+                    className="form-control"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                    placeholder="Loc"
+                    id="loc"
+                  />
+                  <div>
+                  <button className="btn btn-success mt-3" style={{ marginLeft: "30px" }} onClick={SendWdata}>Send Update</button>
+                </div>
+                  </div>
+                  <span style={{fontSize:"13px",color:"red"}}>{(cerr !== undefined && cerr !== null) && cerr } </span>
+                  <br/>
+                  <span>Send Weather Updates to subscribers by entering city, state or country</span>
+                  </div>
+                
+                  {/* <input
+                    type="text"
+                    style={{ border: '1px solid black', width: '300px',marginLeft: "20px" }}
+                    className="form-control"
+                    value={lng}
+                    onChange={(e) => setLng(e.target.value)}
+                    placeholder="Longitude"
+                    id="long"
+                  /> */}
+                  {/* <input
+                    type="text"
+                    style={{ border: '1px solid black', width: '300px',marginLeft: "20px" }}
+                    className="form-control"
+                    value={lng}
+                    onChange={(e) => setLng(e.target.value)}
+                    placeholder="Longitude"
+                    id="long"
+                  /> */}
+                </div>
+                
               </div>
 
 
