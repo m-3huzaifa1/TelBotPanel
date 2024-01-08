@@ -245,7 +245,7 @@ export default function Dashboard() {
         {isFetching ? "Wait.. , Fetching server data " : (<div className="row justify-content-between" style={{ paddingLeft: "10px" }}>
           <div className="col-10">
             <br />
-              {/* <div className="form-group d-flex" style={{ marginLeft: '30px' }}>
+              <div className="form-group d-flex" style={{ marginLeft: '30px' }}>
                 <div>
                   <input
                     type="text"
@@ -260,7 +260,7 @@ export default function Dashboard() {
                 <div>
                   <button className="btn btn-success" style={{ marginLeft: "30px" }} onClick={AddToken}>Update Token</button>
                 </div>
-              </div> */}
+              </div>
 
               <br />
               <div className="form-group d-flex" style={{ marginLeft: '30px' }}>
