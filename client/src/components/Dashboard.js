@@ -217,8 +217,8 @@ export default function Dashboard() {
     <div className="row" style={{ height: "100vh" }}>
 
       <div className="d-none d-sm-block col-2" style={{ backgroundColor: "blueviolet" }}>
-        <div className="row justify-content-center align-items-center mt-3 ml-1" style={{ color: 'white'}}>
-          <h3 className="py-5">Weather Updates</h3>
+        <div className="row justify-content-center align-items-center ml-1" style={{ color: 'white'}}>
+          <h3 className="py-5">Daily <br/>Weather Updates</h3>
         </div>
         <hr/>
 
@@ -287,7 +287,7 @@ export default function Dashboard() {
                     id="message"
                   />
 </div>
-                  <div>
+                  <div className="d-flex align-items-center">
                     <button className="btn btn-success" style={{ marginLeft: "30px" }} onClick={SendMsg}>Send Message</button>
                   </div>
                 </div>
@@ -344,7 +344,7 @@ export default function Dashboard() {
               {
                 allUsers?.map((user, idx) => {
                   return (
-                    <div className="card-body d-flex mb-1 pt-4 mx-2" key={idx} style={{border:"1px solid black"}}>
+                    <div className="card-body d-flex mb-1 pt-4 mx-2" key={idx} style={{border:"1px solid grey",borderRadius:"5px"}}>
                       <h6 style={{ marginRight: "20px" }}>{idx + 1} ) - </h6>
                       <h6 style={{ marginRight: "30px"}}>
                         {/* <span className="py-3 px-2" style={{border:"1px solid black",borderRadius:'10px' }}> */}
