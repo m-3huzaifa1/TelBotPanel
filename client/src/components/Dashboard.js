@@ -295,7 +295,7 @@ export default function Dashboard() {
               <div className="form-group mt-3" style={{ marginLeft: '30px' }}>
                 <div className="d-flex">
                   <div >
-                    <span style={{ marginBottom: "20px" }}> 3) - Send Weather Updates to subscribers by entering city, state or country</span>
+                    <span style={{ marginBottom: "20px" }}> 3) - Send Daily Weather Updates to subscribers by entering city, state or country</span>
 
                     <div className="d-flex">
                       <input
@@ -322,6 +322,7 @@ export default function Dashboard() {
 
               <br />
             </div>
+            <hr/>
             <div className="d-flex justify-content-between">
               <div>
             <h4 style={{float:"left"}}>User Accounts Manager</h4><br />
