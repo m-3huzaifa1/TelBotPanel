@@ -14,27 +14,26 @@ export default function Dashboard() {
   const [botToken, setBotToken] = useState('')
   const [botMessage, setBotMessage] = useState('')
   const [allUsers, setAllUsers] = useState();
-  const [del,setDel] = useState(false)
-  const [isFetching,setIsFetching] = useState(false);
-  const [lat,setLat]= useState("28.6519")
-  const [lng,setLng]= useState("77.2187")
-  const [location,setLocation]= useState("Delhi,India")
-  const [wdata,setWdata] = useState()
-  const [cerr,setCerr] = useState()
-  const [err,setErr] = useState()
+  const [del, setDel] = useState(false)
+  const [isFetching, setIsFetching] = useState(false);
+  const [lat, setLat] = useState("28.6519")
+  const [lng, setLng] = useState("77.2187")
+  const [location, setLocation] = useState("Delhi, India")
+  const [wdata, setWdata] = useState()
+  const [cerr, setCerr] = useState()
 
   useEffect(() => {
     const getUsers = async () => {
-       setIsFetching(true)
+      setIsFetching(true)
 
       await axios.get(`${NESTBOT_URL}/api/user/getAllUsers`,
         {
           headers: { "Content-Type": "application/json" },
-          withCredentials: true,  
+          withCredentials: true,
         })
 
         .then((response) => {
-          // console.log(response)
+           console.log(response)
           setAllUsers(response.data.users);
           setIsFetching(false)
         })
@@ -45,16 +44,16 @@ export default function Dashboard() {
     getUsers();
   }, [del])
 
-  useEffect(()=>{
-    const getCoordinates = async() => {
+  useEffect(() => {
+    const getCoordinates = async () => {
       // const query = `${city}, ${state}, ${country}`;
       const query = location;
       const geoURL = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`;
-  
+
       try {
         const response = await fetch(geoURL);
         const geoData = await response.json();
-  
+
         if (geoData.length > 0) {
           const { lat, lon } = geoData[0];
           setLat(lat);
@@ -71,12 +70,12 @@ export default function Dashboard() {
       }
     }
     getCoordinates();
-  },[location,err])
+  }, [location])
 
-  useEffect(()=>{
-    const getWeatherData = async() => {
+  useEffect(() => {
+    const getWeatherData = async () => {
       const weatherURL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&hourly=temperature_2m,relative_humidity_2m,precipitation&timezone=auto&forecast_days=1`;
-  
+
       try {
         const response = await fetch(weatherURL);
         const weatherData = await response.json();
@@ -87,9 +86,9 @@ export default function Dashboard() {
         throw error;
       }
     }
-  
+
     getWeatherData()
-  },[lat,lng])
+  }, [lat, lng])
 
   const AddToken = async () => {
     const data = {
@@ -129,7 +128,7 @@ export default function Dashboard() {
       })
   };
 
-  const deleteUser = async(userid) => {
+  const deleteUser = async (userid) => {
     const data = {
       id: userid
     }
@@ -149,7 +148,7 @@ export default function Dashboard() {
       })
   }
 
-  const blockuser = async(userid, blocked) => {
+  const blockuser = async (userid, blocked) => {
     const data = {
       id: userid,
       blocked: blocked
@@ -169,7 +168,7 @@ export default function Dashboard() {
       })
   }
 
-  
+
   // const fetchData = async () => {
   //   try {
   //     const data = await getWeatherData('Mumbai');
@@ -179,8 +178,8 @@ export default function Dashboard() {
   //   }
   // };
 
-   const messageTemplate = 
-   `
+  const messageTemplate =
+    `
    Today's Weather Update :
 
    Location : ${location}
@@ -190,12 +189,12 @@ export default function Dashboard() {
    Relative humidity : ${wdata?.hourly?.relative_humidity_2m}
 
    Precipitation : ${wdata?.hourly?.precipitation
-    
-   }
-   `
-   console.log(messageTemplate)
 
-   const SendWdata = async () => {
+    }
+   `
+  // console.log(messageTemplate)
+
+  const SendWdata = async () => {
     const data = {
       msg: messageTemplate
     }
@@ -217,34 +216,42 @@ export default function Dashboard() {
   return (
     <div className="row" style={{ height: "100vh" }}>
 
-      <div className="col-2" style={{ backgroundColor: "blueviolet" }}>
-        <div className="row justify-content-center align-items-center mt-3 ml-1" style={{ color: 'white',border:"2px solid orange" }}>
-          <h3>MH <br/>Weather Updates</h3>
+      <div className="d-none d-sm-block col-2" style={{ backgroundColor: "blueviolet" }}>
+        <div className="row justify-content-center align-items-center mt-3 ml-1" style={{ color: 'white'}}>
+          <h3 className="py-5">Weather Updates</h3>
         </div>
+        <hr/>
 
       </div>
 
       <div className="col-9">
-        <div className="row justify-content-between align-items-center mt-3">
+        <div className="container">
+          <div className="row justify-content-between align-items-center my-3" >
 
-          <div className="col-5" >
-            <h3><Link to='/dashboard' style={{ textDecoration: 'none', float: 'right' }}>Telegram Bot Admin Panel</Link></h3>
+            <div className="col-5" >
+              <h3><Link to='/dashboard' style={{ textDecoration: 'none',  color: "black" }}>Telegram Bot Admin Panel</Link></h3>
+            </div>
+            <div className="col-2">
+              <button className="btn btn-success btn-sm">
+                <span
+                  type="button"
+                  onClick={Logout}
+                  style={{ textDecoration: 'none' }}
+                >
+                  Sign Out
+                </span>
+              </button>
+            </div>
           </div>
-          <div className="col-2">
-            <button className="btn btn-success btn-sm">
-              <span
-                type="button"
-                onClick={Logout}
-                style={{ textDecoration: 'none' }}
-              >
-                Sign Out
-              </span>
-            </button>
-          </div>
-        </div>
-        {isFetching ? "Wait.. , Fetching server data " : (<div className="row justify-content-between" style={{ paddingLeft: "10px" }}>
-          <div className="col-10">
-            <br />
+          <hr/>          
+          {isFetching ? "Wait.. , Fetching server data " : (<div className="row justify-content-between" style={{ paddingLeft: "10px" }}>
+            <div className="col-10">
+              <br />
+              
+              <div className="form-group d-flex" style={{ marginLeft: '30px' }}>
+                <span> 1) - Update existing Bot Token</span>
+              </div>
+              <br/>
               <div className="form-group d-flex" style={{ marginLeft: '30px' }}>
                 <div>
                   <input
@@ -253,18 +260,23 @@ export default function Dashboard() {
                     className="form-control"
                     value={botToken}
                     onChange={(e) => setBotToken(e.target.value)}
-                    placeholder="Updated existing Bot Token"
                     id="bot-token"
                   />
                 </div>
                 <div>
-                  <button className="btn btn-success" style={{ marginLeft: "30px" }} onClick={AddToken}>Update Token</button>
+                  <button className="btn btn-primary" style={{ marginLeft: "30px" }} onClick={AddToken}>Update Token</button>
                 </div>
               </div>
 
               <br />
+              
               <div className="form-group d-flex" style={{ marginLeft: '30px' }}>
-                <div>
+                <span> 2) - Send Custom messsages to Telegram Bot subscribers</span>
+              </div>
+              <br/>
+              <div className="form-group" style={{ marginLeft: '30px' }}>
+                <div className=" d-flex">
+<div>
                   <textarea
 
                     rows={3}
@@ -272,96 +284,94 @@ export default function Dashboard() {
                     className="form-control"
                     value={botMessage}
                     onChange={(e) => setBotMessage(e.target.value)}
-                    placeholder="Send Custom messsage to Telegram Bot subscribers"
                     id="message"
                   />
-                </div>
-                <div>
-                  <button className="btn btn-success" style={{ marginLeft: "30px" }} onClick={SendMsg}>Send Message</button>
+</div>
+                  <div>
+                    <button className="btn btn-success" style={{ marginLeft: "30px" }} onClick={SendMsg}>Send Message</button>
+                  </div>
                 </div>
               </div>
               <div className="form-group mt-3" style={{ marginLeft: '30px' }}>
                 <div className="d-flex">
                   <div >
-                <div className="d-flex">
-                <input
-                    type="text"
-                    style={{ border: '1px solid black', width: '300px' }}
-                    className="form-control"
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
-                    placeholder="Loc"
-                    id="loc"
-                  />
-                  <div>
-                  <button className="btn btn-success mt-3" style={{ marginLeft: "30px" }} onClick={SendWdata}>Send Update</button>
-                </div>
+                    <span style={{ marginBottom: "20px" }}> 3) - Send Weather Updates to subscribers by entering city, state or country</span>
+
+                    <div className="d-flex">
+                      <input
+                        type="text"
+                        style={{ border: '1px solid black',fontSize:'14px', width: '300px' }}
+                        className="form-control mt-3"
+                        value={location}
+                        onChange={(e) => setLocation(e.target.value)}
+                        placeholder="Noida, India "
+                        id="loc"
+                      />
+                      <div>
+                        <button className="btn btn-primary mt-3" style={{ marginLeft: "30px" }} onClick={SendWdata}>Send Update</button>
+                      </div>
+                    </div>
+                    <span style={{ fontSize: "13px", color: "red" }}>{(cerr !== undefined && cerr !== null) && cerr} </span>
+                    <br />
                   </div>
-                  <span style={{fontSize:"13px",color:"red"}}>{(cerr !== undefined && cerr !== null) && cerr } </span>
-                  <br/>
-                  <span>Send Weather Updates to subscribers by entering city, state or country</span>
-                  </div>
-                
-                  {/* <input
-                    type="text"
-                    style={{ border: '1px solid black', width: '300px',marginLeft: "20px" }}
-                    className="form-control"
-                    value={lng}
-                    onChange={(e) => setLng(e.target.value)}
-                    placeholder="Longitude"
-                    id="long"
-                  /> */}
-                  {/* <input
-                    type="text"
-                    style={{ border: '1px solid black', width: '300px',marginLeft: "20px" }}
-                    className="form-control"
-                    value={lng}
-                    onChange={(e) => setLng(e.target.value)}
-                    placeholder="Longitude"
-                    id="long"
-                  /> */}
+
                 </div>
-                
+
               </div>
 
 
-            <br />
-          </div>
-          <h4 className="text-center">User Accounts Manager</h4><br />
-          <h6 className="text-center">* Delete users from Database OR Block users from getting updates</h6><br />
-
-          <div className="card" style={{overflow:'scroll',height:"300px"}}>
-
-            <div className="card-body d-flex" >
-              <h5 style={{marginRight:"20px"}}>S.no</h5>
-              <h5>User ID</h5>
+              <br />
             </div>
-            {
-              allUsers?.map((user, idx) => {
-                return (
-                  <div className="card-body d-flex" key={idx}>
-                    <h6 style={{ marginRight: "20px"}}>{idx+1} ) - </h6>
-                    <h6 style={{marginRight:"30px"}}>{user?.chatId}</h6>
-                    <div>
-                    <button className="btn btn-sm btn-danger" style={{marginRight:"30px"}} onClick={() => {deleteUser(user?.chatId)}}>
-                      Delete User
-                    </button>
-                    </div>
-                    <div>
-                    <button className="btn btn-sm btn-success" style={{marginRight:"30px"}} onClick={() => {blockuser(user?.chatId, user?.blocked)}}>
-                    {user?.blocked ? `Unblock User` : `Block User`}
-                    </button>
-                    </div>
-                    <div>
-                     <span>{user?.blocked && `Blocked from receiving updates`}</span> 
-                    </div>
-                  </div>
-                )
-              })
-            }
-          </div>
+            <div className="d-flex justify-content-between">
+              <div>
+            <h4 style={{float:"left"}}>User Accounts Manager</h4><br />
+            <p style={{float:"left",fontSize:"14px"}} className="mb-3 mt-1"
+            >(Delete users from Database OR Block users from getting updates)</p><br />
+            </div>
+             </div>
+            <div className="card">
 
-        </div>)}
+              <div className="card-body d-flex" >
+                <h5 style={{ marginRight: "20px",
+                //textDecoration:"underline" 
+                }}>S.no</h5>
+                <h5 style={{
+                  //textDecoration:"underline"
+              }}>User ID</h5>
+              </div>
+              <div  style={{ overflow: 'scroll', height: "300px" }}>
+              {
+                allUsers?.map((user, idx) => {
+                  return (
+                    <div className="card-body d-flex mb-1 pt-4 mx-2" key={idx} style={{border:"1px solid black"}}>
+                      <h6 style={{ marginRight: "20px" }}>{idx + 1} ) - </h6>
+                      <h6 style={{ marginRight: "30px"}}>
+                        {/* <span className="py-3 px-2" style={{border:"1px solid black",borderRadius:'10px' }}> */}
+                          {user?.chatId}
+                          {/* </span> */}
+                          </h6>
+                      <div>
+                        <button className="btn btn-sm btn-danger" style={{ marginRight: "30px" }} onClick={() => { deleteUser(user?.chatId) }}>
+                          Delete User
+                        </button>
+                      </div>
+                      <div>
+                        <button className="btn btn-sm btn-success" style={{ marginRight: "30px" }} onClick={() => { blockuser(user?.chatId, user?.blocked) }}>
+                          {user?.blocked ? `Unblock User` : `Block User`}
+                        </button>
+                      </div>
+                      <div>
+                        <span>{user?.blocked && `Blocked from receiving updates`}</span>
+                      </div>
+                    </div>
+                  )
+                })
+              }
+              </div>
+            </div>
+
+          </div>)}
+        </div>
       </div>
 
     </div>
