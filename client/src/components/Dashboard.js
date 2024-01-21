@@ -4,8 +4,8 @@ import useLogout from "../Hooks/useLogout";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-const NESTBOT_URL = "https://fje34rdpdc.ap-southeast-1.awsapprunner.com"
-//const NESTBOT_URL = "https://nestbotserver.onrender.com"
+//const NESTBOT_URL = "https://fje34rdpdc.ap-southeast-1.awsapprunner.com"
+const NESTBOT_URL = "https://nestbotserver.onrender.com"
 // const NESTBOT_URL = "http://localhost:8081"
 
 export default function Dashboard() {
